@@ -1,14 +1,15 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.db.models.expressions import F
+
 
 class User(AbstractUser):
-    email = models.EmailField(unique=True, blank=False)
-    phone = models.CharField(max_length=55)
-    first_name = None
-    last_name = None
+    username = models.CharField(max_length=50)
+    password = models.CharField(max_length=50)
+    email = models.EmailField(max_length=254, unique=True, error_messages={'unique': "O email cadastrado já existe."})
+    phone = models.CharField(max_length=55) 
 
-
-    USERNAME_FIELD = "email"
+    USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ["username"]
 
+    def __str__(self):
+        return self.email
