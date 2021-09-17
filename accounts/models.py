@@ -3,8 +3,8 @@ from django.db import models
 
 
 class User(AbstractUser):
-    username = models.CharField(max_length=50)
-    password = models.CharField(max_length=50)
+    username = models.CharField(max_length=150)
+    password = models.CharField(max_length=255)
     email = models.EmailField(max_length=254, unique=True, error_messages={'unique': "O email cadastrado já existe."})
     phone = models.CharField(max_length=55) 
 

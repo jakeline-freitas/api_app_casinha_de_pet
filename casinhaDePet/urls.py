@@ -13,6 +13,8 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django import urls
+import pets
 from django.contrib import admin
 from django.urls import path, include
 
@@ -21,11 +23,14 @@ from django.conf import settings
 
 from rest_framework import routers
 from accounts.api import viewsets as userviewSets
+from pets import urls as urlsPets
 
-routeUser = routers.DefaultRouter()
 
-routeUser.register('apiUser', userviewSets.UsuariosViewSet, basename='apiUser')
+route= routers.DefaultRouter()
 
+
+route.register('Users', userviewSets.UsuariosViewSet, basename='apiUser')
+# route.register('Pets', urlsPets, basename='apiPet')
 
 
 from rest_framework_simplejwt.views import (
@@ -34,8 +39,9 @@ from rest_framework_simplejwt.views import (
 )
 
 urlpatterns = [
+    path('', include(urlsPets)),
     path('admin/', admin.site.urls),
-    path('', include(routeUser.urls)),
+    path('users/', include(route.urls)),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
